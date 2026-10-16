@@ -1,41 +1,10 @@
-import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import {
-  buildWebsiteMessage,
-  copyText,
-  nativeShare,
-  websiteUrl,
-  whatsappShareUrl,
-} from "../utils/share.js";
 import { SITE_NAME } from "../constants.js";
 import { useAuth } from "../hooks/useAuth.jsx";
 
 export default function Header() {
-  const [toast, setToast] = useState("");
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
-  function flash(message) {
-    setToast(message);
-    window.setTimeout(() => setToast(""), 2500);
-  }
-
-  async function handleShare() {
-    const message = buildWebsiteMessage();
-    const shared = await nativeShare({
-      title: SITE_NAME,
-      text: message,
-      url: websiteUrl(),
-    });
-    if (!shared) {
-      window.open(whatsappShareUrl(message), "_blank", "noopener");
-    }
-  }
-
-  async function handleCopy() {
-    await copyText(websiteUrl());
-    flash("Website link copied");
-  }
 
   function handleLogout() {
     logout();
@@ -63,12 +32,6 @@ export default function Header() {
         )}
 
         <div className="header-actions">
-          <button type="button" className="btn btn-ghost" onClick={handleCopy}>
-            Copy Link
-          </button>
-          <button type="button" className="btn btn-primary" onClick={handleShare}>
-            Share Website
-          </button>
           {isAuthenticated ? (
             <div className="user-menu">
               <span className="user-email" title={user?.email}>
@@ -79,17 +42,12 @@ export default function Header() {
               </button>
             </div>
           ) : (
-            <NavLink to="/login" className="btn btn-outline">
+            <NavLink to="/login" className="btn btn-primary">
               Log in
             </NavLink>
           )}
         </div>
       </div>
-      {toast && (
-        <div className="toast" role="status">
-          {toast}
-        </div>
-      )}
     </header>
   );
 }
