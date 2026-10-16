@@ -29,7 +29,7 @@ export function useTheme() {
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "dark" ? "#0b1120" : "#ffffff");
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#0e0f11" : "#ffffff");
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {
