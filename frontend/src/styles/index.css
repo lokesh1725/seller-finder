@@ -926,3 +926,79 @@ textarea {
     min-width: 100%;
   }
 }
+
+/* --- Authentication / login --- */
+.login-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 60vh;
+  padding: 48px 16px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-brand {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.login-brand h1 {
+  font-size: 22px;
+  margin: 4px 0 0;
+}
+
+.login-brand .brand-mark {
+  width: 48px;
+  height: 48px;
+  font-size: 18px;
+}
+
+.login-error {
+  background: #fdecec;
+  color: #a32020;
+  border: 1px solid #f3bcbc;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.login-hint {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.btn-block {
+  width: 100%;
+  justify-content: center;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-email {
+  font-size: 13px;
+  color: var(--muted, #667085);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .user-email {
+    display: none;
+  }
+}

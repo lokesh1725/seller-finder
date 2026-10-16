@@ -13,6 +13,7 @@ from flask import jsonify, request
 from pymongo.errors import PyMongoError
 
 from . import api, enforce_rate_limit
+from .auth import require_auth
 from .. import db
 from ..db import DatabaseUnavailable
 from ..errors import NotFound, ServiceUnavailable, ValidationError
@@ -44,6 +45,7 @@ def _serialize(doc: dict) -> dict:
 
 
 @api.get("/leads")
+@require_auth
 def list_leads():
     enforce_rate_limit()
     try:
@@ -54,6 +56,7 @@ def list_leads():
 
 
 @api.post("/leads")
+@require_auth
 def create_lead():
     enforce_rate_limit()
     body = request.get_json(silent=True) or {}
@@ -78,6 +81,7 @@ def create_lead():
 
 
 @api.patch("/leads/<lead_id>")
+@require_auth
 def update_lead(lead_id: str):
     enforce_rate_limit()
     body = request.get_json(silent=True) or {}
@@ -106,6 +110,7 @@ def update_lead(lead_id: str):
 
 
 @api.delete("/leads/<lead_id>")
+@require_auth
 def delete_lead(lead_id: str):
     enforce_rate_limit()
     try:

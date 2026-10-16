@@ -26,3 +26,7 @@ services:
         generateValue: true
       - key: SECRET_KEY
         generateValue: true
+      - key: AUTH_EMAIL
+        sync: false
+      - key: AUTH_PASSWORD
+        sync: false

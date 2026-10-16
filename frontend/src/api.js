@@ -6,6 +6,25 @@ const ENV =
   (typeof import.meta !== "undefined" && import.meta && import.meta.env) || {};
 const API_BASE = (ENV.VITE_API_BASE_URL || "").replace(/\/$/, "");
 
+const TOKEN_KEY = "seller_finder_token";
+
+export function getToken() {
+  try {
+    return localStorage.getItem(TOKEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function setToken(token) {
+  try {
+    if (token) localStorage.setItem(TOKEN_KEY, token);
+    else localStorage.removeItem(TOKEN_KEY);
+  } catch {
+    /* storage unavailable */
+  }
+}
+
 export class ApiError extends Error {
   constructor(message, status, code) {
     super(message);
@@ -16,12 +35,15 @@ export class ApiError extends Error {
 }
 
 async function request(path, options = {}) {
+  const token = getToken();
+  const headers = {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(options.headers || {}),
+  };
   let response;
   try {
-    response = await fetch(`${API_BASE}${path}`, {
-      headers: { "Content-Type": "application/json", ...(options.headers || {}) },
-      ...options,
-    });
+    response = await fetch(`${API_BASE}${path}`, { headers, ...options });
   } catch (err) {
     throw new ApiError(
       "Could not reach the server. Please check your connection and try again.",
@@ -47,6 +69,14 @@ export const api = {
   baseUrl: API_BASE,
 
   health: () => request("/api/health"),
+
+  login: (email, password) =>
+    request("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    }),
+
+  me: () => request("/api/auth/me"),
 
   search: (query, opts = {}) => {
     const params = new URLSearchParams({ q: query });

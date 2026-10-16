@@ -4,6 +4,7 @@ from __future__ import annotations
 from flask import jsonify, request
 
 from . import api, enforce_rate_limit
+from .auth import require_auth
 from ..db import DatabaseUnavailable
 from ..errors import ServiceUnavailable, ValidationError
 from ..services import aggregator
@@ -21,6 +22,7 @@ def _int_arg(name: str, default: int, minimum: int = 1, maximum: int = 100) -> i
 
 
 @api.get("/search")
+@require_auth
 def search_get():
     enforce_rate_limit()
     query = (request.args.get("q") or "").strip()
@@ -44,6 +46,7 @@ def search_get():
 
 
 @api.post("/search")
+@require_auth
 def search_post():
     enforce_rate_limit()
     body = request.get_json(silent=True) or {}

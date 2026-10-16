@@ -6,6 +6,7 @@ import re
 from flask import jsonify, request
 
 from . import api, enforce_rate_limit
+from .auth import require_auth
 from ..db import DatabaseUnavailable
 from ..errors import NotFound, ServiceUnavailable, ValidationError
 from ..services import aggregator, verification
@@ -36,6 +37,7 @@ def get_business(identifier: str):
 
 
 @api.post("/businesses/<identifier>/refresh")
+@require_auth
 def refresh_business(identifier: str):
     enforce_rate_limit()
     _validate_identifier(identifier)

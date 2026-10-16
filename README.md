@@ -110,6 +110,21 @@ npm run dev                 # http://localhost:5173
 The Vite dev server proxies `/api/*` to `http://localhost:5000`, so no CORS
 setup is needed locally.
 
+### 3. Logging in
+
+The app is gated behind a login. Default credentials (override with the
+`AUTH_EMAIL` / `AUTH_PASSWORD` backend env vars):
+
+| Field    | Value           |
+| -------- | --------------- |
+| Email    | admin@gmail.com |
+| Password | Test@123        |
+
+Login issues a signed, time-limited token stored by the SPA; protected routes
+(Search, Saved Leads) redirect to `/login` when no valid session exists. Public
+business profiles (`/business/<slug>`) stay reachable without login so links
+shared over WhatsApp open directly for recipients.
+
 ### MongoDB Compass
 
 1. Open MongoDB Compass and connect to `mongodb://localhost:27017`.
@@ -218,7 +233,8 @@ Summary:
 1. **MongoDB Atlas** - create a free cluster, database user and network access.
 2. **Render** - deploy `backend/`; set `MONGODB_URI`, `MONGODB_DATABASE`,
    `FRONTEND_URL`, `PUBLIC_FRONTEND_URL`, `SEARCH_PROVIDER`, `SEARCH_API_KEY`,
-   `ADMIN_API_TOKEN`, `SECRET_KEY`. Health check: `/api/health`.
+   `ADMIN_API_TOKEN`, `SECRET_KEY`, `AUTH_EMAIL`, `AUTH_PASSWORD`. Health check:
+   `/api/health`.
 3. **Import data** - run `python scripts/import_excel.py` locally against the
    Atlas URI, or `POST /api/admin/import` with the admin token.
 4. **Vercel** - deploy `frontend/`; set `VITE_API_BASE_URL` to the Render URL and

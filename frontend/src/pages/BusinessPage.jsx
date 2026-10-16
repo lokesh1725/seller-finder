@@ -4,12 +4,14 @@ import FieldRow from "../components/FieldRow.jsx";
 import ShareButtons from "../components/ShareButtons.jsx";
 import { Spinner, StateMessage } from "../components/StateMessage.jsx";
 import { useSeo } from "../hooks/useSeo.js";
+import { useAuth } from "../hooks/useAuth.jsx";
 import { api } from "../api.js";
 import { displayValue, formatDate } from "../utils/format.js";
 import { siteBaseUrl } from "../utils/share.js";
 
 export default function BusinessPage() {
   const { slug } = useParams();
+  const { isAuthenticated } = useAuth();
   const [state, setState] = useState({ loading: true, error: null, business: null });
   const [refreshing, setRefreshing] = useState(false);
   const [refreshNote, setRefreshNote] = useState("");
@@ -120,24 +122,30 @@ export default function BusinessPage() {
         </div>
         <div className="business-header-actions">
           <ShareButtons business={b} />
-          <div className="action-row">
-            <button
-              type="button"
-              className="btn btn-outline"
-              onClick={saveLead}
-              disabled={saveState.saving || saveState.saved}
-            >
-              {saveState.saved ? "Saved OK" : "Save to Leads"}
-            </button>
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={refresh}
-              disabled={refreshing}
-            >
-              {refreshing ? "Refreshing..." : "Refresh from web"}
-            </button>
-          </div>
+          {isAuthenticated ? (
+            <div className="action-row">
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={saveLead}
+                disabled={saveState.saving || saveState.saved}
+              >
+                {saveState.saved ? "Saved" : "Save to Leads"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={refresh}
+                disabled={refreshing}
+              >
+                {refreshing ? "Refreshing..." : "Refresh from web"}
+              </button>
+            </div>
+          ) : (
+            <p className="muted small">
+              <Link to="/login">Log in</Link> to save this lead or refresh from the web.
+            </p>
+          )}
           {saveState.message ? <p className="muted small">{saveState.message}</p> : null}
           {refreshNote ? <p className="muted small">{refreshNote}</p> : null}
         </div>

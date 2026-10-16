@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   buildWebsiteMessage,
   copyText,
@@ -8,9 +8,12 @@ import {
   whatsappShareUrl,
 } from "../utils/share.js";
 import { SITE_NAME } from "../constants.js";
+import { useAuth } from "../hooks/useAuth.jsx";
 
 export default function Header() {
   const [toast, setToast] = useState("");
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   function flash(message) {
     setToast(message);
@@ -34,6 +37,11 @@ export default function Header() {
     flash("Website link copied");
   }
 
+  function handleLogout() {
+    logout();
+    navigate("/login", { replace: true });
+  }
+
   return (
     <header className="site-header">
       <div className="container header-inner">
@@ -45,12 +53,14 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="main-nav" aria-label="Main">
-          <NavLink to="/" end>
-            Search
-          </NavLink>
-          <NavLink to="/saved">Saved Leads</NavLink>
-        </nav>
+        {isAuthenticated && (
+          <nav className="main-nav" aria-label="Main">
+            <NavLink to="/" end>
+              Search
+            </NavLink>
+            <NavLink to="/saved">Saved Leads</NavLink>
+          </nav>
+        )}
 
         <div className="header-actions">
           <button type="button" className="btn btn-ghost" onClick={handleCopy}>
@@ -59,6 +69,20 @@ export default function Header() {
           <button type="button" className="btn btn-primary" onClick={handleShare}>
             Share Website
           </button>
+          {isAuthenticated ? (
+            <div className="user-menu">
+              <span className="user-email" title={user?.email}>
+                {user?.email}
+              </span>
+              <button type="button" className="btn btn-outline" onClick={handleLogout}>
+                Log out
+              </button>
+            </div>
+          ) : (
+            <NavLink to="/login" className="btn btn-outline">
+              Log in
+            </NavLink>
+          )}
         </div>
       </div>
       {toast && (

@@ -58,6 +58,11 @@ class Config:
     # --- Admin / import ---
     ADMIN_API_TOKEN = os.getenv("ADMIN_API_TOKEN", "")
 
+    # --- Application login (dummy credentials by default; override via env) ---
+    AUTH_EMAIL = os.getenv("AUTH_EMAIL", "admin@gmail.com")
+    AUTH_PASSWORD = os.getenv("AUTH_PASSWORD", "Test@123")
+    AUTH_TOKEN_MAX_AGE = int(os.getenv("AUTH_TOKEN_MAX_AGE", str(60 * 60 * 24 * 7)))
+
     # --- Rate limiting (simple in-process limiter) ---
     RATE_LIMIT_PER_MINUTE = int(os.getenv("RATE_LIMIT_PER_MINUTE", "60"))
 

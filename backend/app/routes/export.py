@@ -7,6 +7,7 @@ import io
 from flask import Response, request
 
 from . import api, enforce_rate_limit
+from .auth import require_auth
 from .. import db
 from ..db import DatabaseUnavailable
 from ..errors import ServiceUnavailable
@@ -44,6 +45,7 @@ def _flatten(value) -> str:
 
 
 @api.get("/export")
+@require_auth
 def export_csv():
     enforce_rate_limit()
     ids = request.args.get("ids")
