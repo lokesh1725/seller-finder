@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/business/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(WhatsApp|facebookexternalhit|Facebot|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Googlebot|bingbot|Applebot|Embedly|Pinterest|vkShare).*"
+        }
+      ],
+      "destination": "/api/og?slug=:slug"
+    },
+    { "source": "/((?!assets/|api/).*)", "destination": "/index.html" }
+  ]
+}

@@ -1,0 +1,54 @@
+"""MongoDB collection initialisation and index creation.
+
+:func:`ensure_indexes` is idempotent and safe to call on every boot.
+"""
+from __future__ import annotations
+
+import logging
+
+from pymongo import ASCENDING, TEXT
+
+from . import db
+
+logger = logging.getLogger(__name__)
+
+
+def ensure_indexes() -> None:
+    database = db.get_db()
+
+    businesses = database["businesses"]
+    businesses.create_index("business_id", unique=True, name="uniq_business_id")
+    businesses.create_index("slug", unique=True, name="uniq_slug")
+    businesses.create_index("normalized_name", name="idx_normalized_name")
+    businesses.create_index("business_category", name="idx_category")
+    businesses.create_index("city", name="idx_city")
+    businesses.create_index("state", name="idx_state")
+    businesses.create_index("official_domain", name="idx_domain")
+    # Ranked full-text style search across the important name fields.
+    businesses.create_index(
+        [
+            ("company_name", TEXT),
+            ("alternate_names", TEXT),
+            ("product_categories", TEXT),
+            ("city", TEXT),
+        ],
+        name="idx_fulltext",
+        default_language="none",
+    )
+
+    leads = database["leads"]
+    leads.create_index("lead_id", unique=True, name="uniq_lead_id")
+    leads.create_index("business_id", name="idx_lead_business")
+    leads.create_index([("created_at", ASCENDING)], name="idx_lead_created")
+
+    prospects = database["prospects"]
+    prospects.create_index("company_name", unique=True, name="uniq_prospect_name")
+
+    import_runs = database["import_runs"]
+    import_runs.create_index([("started_at", ASCENDING)], name="idx_import_started")
+
+    search_cache = database["search_cache"]
+    search_cache.create_index("cache_key", unique=True, name="uniq_cache_key")
+    search_cache.create_index("expires_at", expireAfterSeconds=0, name="ttl_cache")
+
+    logger.info("MongoDB indexes ensured for database '%s'", db.Config.MONGODB_DATABASE)
