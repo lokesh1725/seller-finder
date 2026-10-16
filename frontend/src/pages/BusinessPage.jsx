@@ -18,7 +18,7 @@ export default function BusinessPage() {
   useSeo({
     title: state.business?.company_name || "Business profile",
     description: state.business
-      ? `${state.business.company_name} — ${state.business.business_category || "business"} in ${
+      ? `${state.business.company_name}  -  ${state.business.business_category || "business"} in ${
           [state.business.city, state.business.state].filter(Boolean).join(", ") || "India"
         }`
       : "Business profile",
@@ -114,7 +114,7 @@ export default function BusinessPage() {
           ) : null}
           <p className="business-category">{b.business_category || "Uncategorised"}</p>
           {b.product_categories?.length ? (
-            <p className="muted small">{b.product_categories.join(" · ")}</p>
+            <p className="muted small">{b.product_categories.join("    -   ")}</p>
           ) : null}
           {location ? <p className="business-location">{location}</p> : null}
         </div>
@@ -127,7 +127,7 @@ export default function BusinessPage() {
               onClick={saveLead}
               disabled={saveState.saving || saveState.saved}
             >
-              {saveState.saved ? "Saved ✓" : "Save to Leads"}
+              {saveState.saved ? "Saved OK" : "Save to Leads"}
             </button>
             <button
               type="button"

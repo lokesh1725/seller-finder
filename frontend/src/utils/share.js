@@ -64,7 +64,7 @@ export async function nativeShare({ title, text, url }) {
 }
 
 export function buildWebsiteMessage() {
-  return `Check out Seller Information Finder — search Indian fashion brands, D2C sellers & garment manufacturers: ${websiteUrl()}`;
+  return `Check out Seller Information Finder  -  search Indian fashion brands, D2C sellers & garment manufacturers: ${websiteUrl()}`;
 }
 
 export function buildBusinessMessage(business) {

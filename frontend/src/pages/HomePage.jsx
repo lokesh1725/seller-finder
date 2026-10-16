@@ -60,7 +60,7 @@ export default function HomePage() {
                     aria-label={`Remove ${query}`}
                     onClick={() => remove(query)}
                   >
-                    ×
+                    x
                   </button>
                 </li>
               ))}
@@ -103,7 +103,7 @@ export default function HomePage() {
             ))}
           </div>
           <p className="muted small">
-            Searches are not limited to these cities — any Indian state or city is supported.
+            Searches are not limited to these cities  -  any Indian state or city is supported.
           </p>
         </section>
       </div>

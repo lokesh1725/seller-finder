@@ -6,7 +6,7 @@ function availabilityLabel(item) {
   if (item.has_email) parts.push("Email");
   if (item.has_phone) parts.push("Phone");
   if (item.has_linkedin) parts.push("LinkedIn");
-  return parts.length ? parts.join(" · ") : "No public contacts yet";
+  return parts.length ? parts.join("    -   ") : "No public contacts yet";
 }
 
 export default function CompanyCard({ business, matchType }) {

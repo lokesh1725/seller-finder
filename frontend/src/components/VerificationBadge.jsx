@@ -5,7 +5,7 @@ export default function VerificationBadge({ status, source, lastVerified }) {
   return (
     <span className={`badge badge-${resolved}`} title={source ? `Source: ${source}` : undefined}>
       {statusLabel(resolved)}
-      {lastVerified ? <span className="badge-date"> · {lastVerified}</span> : null}
+      {lastVerified ? <span className="badge-date">    -   {lastVerified}</span> : null}
     </span>
   );
 }

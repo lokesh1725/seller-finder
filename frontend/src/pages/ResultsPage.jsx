@@ -110,7 +110,7 @@ export default function ResultsPage() {
             Showing <strong>{results.length}</strong>
             {state.data.total > results.length ? ` of ${state.data.total}` : ""} result
             {results.length === 1 ? "" : "s"}
-            {state.data.source ? <span className="muted"> · source: {state.data.source}</span> : null}
+            {state.data.source ? <span className="muted">    -   source: {state.data.source}</span> : null}
           </p>
 
           {state.data.web_search && state.data.web_search.available === false && (

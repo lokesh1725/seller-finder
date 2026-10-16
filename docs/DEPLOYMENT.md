@@ -2,10 +2,10 @@
 
 This guide deploys **Seller Information Finder** to production:
 
-- **MongoDB Atlas** — cloud database
-- **Render** — Flask backend (public HTTPS API)
-- **Vercel** — React/Vite frontend (public HTTPS site + WhatsApp previews)
-- **GitHub** — source of truth for both platforms
+- **MongoDB Atlas** - cloud database
+- **Render** - Flask backend (public HTTPS API)
+- **Vercel** - React/Vite frontend (public HTTPS site + WhatsApp previews)
+- **GitHub** - source of truth for both platforms
 
 The end result is a public HTTPS URL such as `https://seller-finder.vercel.app`
 that you can share through WhatsApp.
@@ -34,13 +34,13 @@ git push -u origin main
 
 1. Create a free account at <https://www.mongodb.com/cloud/atlas>.
 2. Create a **free (M0) cluster**.
-3. **Database Access** → add a database user (e.g. `seller_finder_app`) with a
+3. **Database Access** -> add a database user (e.g. `seller_finder_app`) with a
    strong password and *Read and write to any database* (or scope to
    `seller_finder`).
-4. **Network Access** → add an IP access list entry. For Render's dynamic IPs,
+4. **Network Access** -> add an IP access list entry. For Render's dynamic IPs,
    add `0.0.0.0/0` (allow from anywhere) and rely on strong credentials +
-   TLS — or use Render's static outbound IPs on a paid plan and allow only those.
-5. **Connect → Drivers** → copy the `mongodb+srv://…` connection string. Use it
+   TLS - or use Render's static outbound IPs on a paid plan and allow only those.
+5. **Connect -> Drivers** -> copy the `mongodb+srv://...` connection string. Use it
    as `MONGODB_URI` (append `/seller_finder?retryWrites=true&w=majority` or set
    `MONGODB_DATABASE=seller_finder`).
 
@@ -50,14 +50,14 @@ The database is never exposed directly to browsers; only the backend connects.
 
 ## 2. Backend on Render
 
-### Option A — Blueprint (recommended)
+### Option A - Blueprint (recommended)
 
-`backend/render.yaml` defines the service. In Render: **New → Blueprint**,
+`backend/render.yaml` defines the service. In Render: **New -> Blueprint**,
 connect the repo, point to `backend/render.yaml`.
 
-### Option B — Manual web service
+### Option B - Manual web service
 
-- **New → Web Service**, connect the GitHub repo.
+- **New -> Web Service**, connect the GitHub repo.
 - **Root Directory:** `backend`
 - **Runtime:** Python 3
 - **Build Command:** `pip install -r requirements.txt`
@@ -105,7 +105,7 @@ curl -X POST https://<api>.onrender.com/api/admin/import \
 
 ## 3. Frontend on Vercel
 
-1. **New Project** → import the GitHub repo.
+1. **New Project** -> import the GitHub repo.
 2. **Root Directory:** `frontend`
 3. Framework preset: **Vite** (Build: `npm run build`, Output: `dist`).
 4. Environment variables:
@@ -141,7 +141,7 @@ Add your domain in Vercel (frontend) and Render (API), then update
 
 ## Verification checklist
 
-- [ ] `https://<api>.onrender.com/api/health` → `{"status":"ok"}`
+- [ ] `https://<api>.onrender.com/api/health` -> `{"status":"ok"}`
 - [ ] `https://<app>.vercel.app` loads over HTTPS
 - [ ] Search returns seeded companies; unknown names show an empty state
 - [ ] `/business/<slug>` deep link works on refresh

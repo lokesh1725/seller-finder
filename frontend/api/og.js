@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     : "Seller Information Finder";
   const location = [business?.city, business?.state].filter(Boolean).join(", ");
   const description = business?.company_name
-    ? `${business.company_name}${location ? ` — ${location}` : ""}. Business profile, public contacts and sources.`
+    ? `${business.company_name}${location ? `  -  ${location}` : ""}. Business profile, public contacts and sources.`
     : "Business intelligence and contact discovery for Indian fashion, D2C and manufacturing brands.";
 
   const html = `<!doctype html>

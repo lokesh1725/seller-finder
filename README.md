@@ -4,8 +4,8 @@ A business-intelligence and contact-discovery web app for Indian fashion D2C
 brands, e-commerce sellers, garment/textile manufacturers, wholesalers and
 suppliers.
 
-Enter a company name → the app searches its MongoDB database → falls back to a
-permitted public web-search provider for missing companies → shows a full
+Enter a company name -> the app searches its MongoDB database -> falls back to a
+permitted public web-search provider for missing companies -> shows a full
 business profile with **sourced, field-level verification**.
 
 - **Frontend:** React + Vite (deploy to Vercel)
@@ -36,38 +36,38 @@ business profile with **sourced, field-level verification**.
 
 ```
 seller-finder/
-├── backend/                 Flask REST API
-│   ├── app/
-│   │   ├── __init__.py      App factory, CORS, ISO JSON, security headers
-│   │   ├── config.py        Env-driven configuration
-│   │   ├── db.py            Lazy MongoDB connection + collection accessors
-│   │   ├── schema.py        Idempotent index creation
-│   │   ├── utils.py         Normalisation, parsing, SSRF-safe URL checks
-│   │   ├── errors.py        Structured JSON errors
-│   │   ├── limiter.py       In-process rate limiter
-│   │   ├── routes/          health, search, businesses, leads, export, admin
-│   │   └── services/        importer, aggregator, search_provider, verification, cache
-│   ├── scripts/import_excel.py   CLI importer
-│   ├── tests/               pytest suite (mocked API calls)
-│   ├── requirements.txt
-│   ├── render.yaml          Render blueprint
-│   ├── wsgi.py / run.py
-│   └── .env.example
-├── frontend/                React + Vite SPA
-│   ├── src/
-│   │   ├── api.js           Typed fetch client
-│   │   ├── pages/           Home, Results, Business, SavedLeads, NotFound
-│   │   ├── components/      Header, SearchBar, CompanyCard, FieldRow, ShareButtons…
-│   │   ├── hooks/           useSeo, useRecentSearches
-│   │   └── utils/           share.js (WhatsApp/Web Share), format.js
-│   ├── api/og.js            Vercel function: OG previews for crawlers (WhatsApp)
-│   ├── tests/               Node test runner (share utilities)
-│   ├── vercel.json          SPA + crawler rewrites
-│   └── .env.example
-├── data/
-│   └── India_Product_Photography_Leads.xlsx
-├── docs/DEPLOYMENT.md
-└── README.md
+|-- backend/                 Flask REST API
+|   |-- app/
+|   |   |-- __init__.py      App factory, CORS, ISO JSON, security headers
+|   |   |-- config.py        Env-driven configuration
+|   |   |-- db.py            Lazy MongoDB connection + collection accessors
+|   |   |-- schema.py        Idempotent index creation
+|   |   |-- utils.py         Normalisation, parsing, SSRF-safe URL checks
+|   |   |-- errors.py        Structured JSON errors
+|   |   |-- limiter.py       In-process rate limiter
+|   |   |-- routes/          health, search, businesses, leads, export, admin
+|   |   `-- services/        importer, aggregator, search_provider, verification, cache
+|   |-- scripts/import_excel.py   CLI importer
+|   |-- tests/               pytest suite (mocked API calls)
+|   |-- requirements.txt
+|   |-- render.yaml          Render blueprint
+|   |-- wsgi.py / run.py
+|   `-- .env.example
+|-- frontend/                React + Vite SPA
+|   |-- src/
+|   |   |-- api.js           Typed fetch client
+|   |   |-- pages/           Home, Results, Business, SavedLeads, NotFound
+|   |   |-- components/      Header, SearchBar, CompanyCard, FieldRow, ShareButtons...
+|   |   |-- hooks/           useSeo, useRecentSearches
+|   |   `-- utils/           share.js (WhatsApp/Web Share), format.js
+|   |-- api/og.js            Vercel function: OG previews for crawlers (WhatsApp)
+|   |-- tests/               Node test runner (share utilities)
+|   |-- vercel.json          SPA + crawler rewrites
+|   `-- .env.example
+|-- data/
+|   `-- India_Product_Photography_Leads.xlsx
+|-- docs/DEPLOYMENT.md
+`-- README.md
 ```
 
 ---
@@ -113,7 +113,7 @@ setup is needed locally.
 ### MongoDB Compass
 
 1. Open MongoDB Compass and connect to `mongodb://localhost:27017`.
-2. Database: `seller_finder` → collections: `businesses`, `leads`, `prospects`,
+2. Database: `seller_finder` -> collections: `businesses`, `leads`, `prospects`,
    `import_runs`, `search_cache`.
 
 Compass is an administration tool only; the app always talks to the real
@@ -146,7 +146,7 @@ python scripts/import_excel.py --path /path/to/other.xlsx
 - Re-running never creates duplicate companies (matched by normalised name).
 - Empty spreadsheet cells never overwrite valid stored values.
 - Company names are normalised; punctuation/parenthetical aliases are extracted
-  (e.g. `Bunaai (now trading as Bunai)` → aliases `["Bunai"]`).
+  (e.g. `Bunaai (now trading as Bunai)` -> aliases `["Bunai"]`).
 - Imported values are marked **unverified** with the source URL preserved.
 
 The same import is available over a protected endpoint:
@@ -165,7 +165,7 @@ curl -X POST http://localhost:5000/api/admin/import \
 | Method | Path                              | Purpose |
 | ------ | --------------------------------- | ------- |
 | GET    | `/api/health`                     | Liveness + DB connectivity |
-| GET    | `/api/search?q=…&category=&city=&limit=&offset=` | DB-first search |
+| GET    | `/api/search?q=...&category=&city=&limit=&offset=` | DB-first search |
 | POST   | `/api/search`                     | Search with `{query, category, city, allow_web}` |
 | GET    | `/api/businesses/:idOrSlug`       | Full business profile |
 | POST   | `/api/businesses/:idOrSlug/refresh` | Re-check permitted public sources |
@@ -187,7 +187,7 @@ Errors are always structured:
 
 Configure `SEARCH_PROVIDER=brave` (or `bing`) and `SEARCH_API_KEY` to enable
 live web search. With no key, the provider reports
-`search_provider_not_configured` and the app simply shows stored records — it
+`search_provider_not_configured` and the app simply shows stored records - it
 **never fabricates** results. Results are cached in MongoDB (TTL) to limit API
 usage.
 
@@ -215,13 +215,13 @@ and URL validation, and WhatsApp URL generation.
 Full step-by-step instructions live in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 Summary:
 
-1. **MongoDB Atlas** — create a free cluster, database user and network access.
-2. **Render** — deploy `backend/`; set `MONGODB_URI`, `MONGODB_DATABASE`,
+1. **MongoDB Atlas** - create a free cluster, database user and network access.
+2. **Render** - deploy `backend/`; set `MONGODB_URI`, `MONGODB_DATABASE`,
    `FRONTEND_URL`, `PUBLIC_FRONTEND_URL`, `SEARCH_PROVIDER`, `SEARCH_API_KEY`,
    `ADMIN_API_TOKEN`, `SECRET_KEY`. Health check: `/api/health`.
-3. **Import data** — run `python scripts/import_excel.py` locally against the
+3. **Import data** - run `python scripts/import_excel.py` locally against the
    Atlas URI, or `POST /api/admin/import` with the admin token.
-4. **Vercel** — deploy `frontend/`; set `VITE_API_BASE_URL` to the Render URL and
+4. **Vercel** - deploy `frontend/`; set `VITE_API_BASE_URL` to the Render URL and
    `VITE_PUBLIC_SITE_URL` to the Vercel URL. Set the same `BACKEND_URL` and
    `PUBLIC_SITE_URL` env vars for the `/api/og` preview function.
 5. Set `FRONTEND_URL` on Render to the Vercel domain so CORS is restricted.
