@@ -165,6 +165,8 @@ def build_document(row: dict, source_urls: list[str]) -> dict:
         "source_row": row.get("index"),
         "last_verified_at": None,
     }
+    # Compute a transparent lead priority score
+    doc["lead_priority_score"] = compute_lead_priority(doc)
     doc["field_verification_status"] = verification.build_field_statuses(
         doc, source_urls[0] if source_urls else None
     )
@@ -343,3 +345,26 @@ def import_workbook(path: str | Path = DEFAULT_WORKBOOK, dry_run: bool = False) 
         except Exception:  # pragma: no cover
             pass
     return summary
+
+
+def compute_lead_priority(doc: dict) -> int:
+    score = 0
+    if doc.get("business_email"):
+        score += 20
+    if doc.get("business_phone"):
+        score += 15
+    if doc.get("official_website"):
+        score += 15
+    if doc.get("linkedin_company_url"):
+        score += 10
+    if doc.get("founder_name"):
+        score += 10
+    if doc.get("founder_linkedin_url"):
+        score += 5
+    if doc.get("business_address"):
+        score += 5
+    if doc.get("marketplace_profiles"):
+        score += 10
+    if doc.get("manufacturer_capabilities"):
+        score += 10
+    return min(score, 100)

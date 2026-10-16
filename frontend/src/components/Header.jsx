@@ -30,6 +30,7 @@ export default function Header() {
               Search
             </NavLink>
             <NavLink to="/saved">Saved Leads</NavLink>
+            <NavLink to="/research">Research</NavLink>
           </nav>
         )}
 

@@ -8,6 +8,8 @@ import BusinessPage from "./pages/BusinessPage.jsx";
 import SavedLeadsPage from "./pages/SavedLeadsPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import ResearchPage from "./pages/ResearchPage.jsx";
+import ResearchResultsPage from "./pages/ResearchResultsPage.jsx";
 
 export default function App() {
   return (
@@ -44,6 +46,22 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/research"
+            element={
+              <ProtectedRoute>
+                <ResearchPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/research/:jobId"
+            element={
+              <ProtectedRoute>
+                <ResearchResultsPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
@@ -51,3 +69,4 @@ export default function App() {
     </div>
   );
 }
+// add import and routes

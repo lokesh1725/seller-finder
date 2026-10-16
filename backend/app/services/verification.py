@@ -3,17 +3,22 @@
 The core rule: having a value is not the same as having a *verified* value.
 Each important field records where the value came from and its status:
 
-* ``verified``    - confirmed against an authoritative public source
-* ``unverified``  - present in the source data but not independently confirmed
-* ``unavailable`` - no reliable public value could be found
+* ``verified``            - supported by a reliable, relevant source and checked
+* ``officially_published`` - listed on an official business source, but not independently confirmed as currently active
+* ``partially_verified``  - some supporting evidence exists, but important details remain uncertain
+* ``unverified``          - found in a source that has not been adequately corroborated
+* ``unavailable``         - no reliable matching information was found
 """
 from __future__ import annotations
 
 from ..utils import utcnow
 
 VERIFIED = "verified"
+OFFICIALLY_PUBLISHED = "officially_published"
+PARTIALLY_VERIFIED = "partially_verified"
 UNVERIFIED = "unverified"
 UNAVAILABLE = "unavailable"
+NOT_FOUND = UNAVAILABLE  # Spec compatibility
 
 TRACKED_FIELDS = (
     "official_website",
@@ -23,6 +28,7 @@ TRACKED_FIELDS = (
     "founder_name",
     "ceo_name",
     "business_address",
+    "founder_linkedin_url",
 )
 
 
@@ -52,13 +58,13 @@ def build_field_statuses(document: dict, source: str | None = None) -> dict:
 
 
 def summarize(statuses: dict) -> dict:
-    counts = {VERIFIED: 0, UNVERIFIED: 0, UNAVAILABLE: 0}
+    counts = {VERIFIED: 0, OFFICIALLY_PUBLISHED: 0, PARTIALLY_VERIFIED: 0, UNVERIFIED: 0, UNAVAILABLE: 0}
     for entry in (statuses or {}).values():
         status = (entry or {}).get("status")
         if status in counts:
             counts[status] += 1
-    present = counts[VERIFIED] + counts[UNVERIFIED]
-    total =present + counts[UNAVAILABLE]
+    present = counts[VERIFIED] + counts[OFFICIALLY_PUBLISHED] + counts[PARTIALLY_VERIFIED] + counts[UNVERIFIED]
+    total = present + counts[UNAVAILABLE]
     return {
         "counts": counts,
         "fields_with_data": present,

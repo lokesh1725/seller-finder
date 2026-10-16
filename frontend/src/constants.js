@@ -44,6 +44,9 @@ export const OUTREACH_STATES = [
 
 export const VERIFICATION_LABELS = {
   verified: "Verified",
+  officially_published: "Officially published",
+  partially_verified: "Partially verified",
   unverified: "Unverified",
   unavailable: "Not found",
+  not_found: "Not found",
 };

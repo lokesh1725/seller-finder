@@ -24,6 +24,7 @@ def ensure_indexes() -> None:
     businesses.create_index("city", name="idx_city")
     businesses.create_index("state", name="idx_state")
     businesses.create_index("official_domain", name="idx_domain")
+    businesses.create_index("lead_priority_score", name="idx_lead_priority")
     # Ranked full-text style search across the important name fields.
     businesses.create_index(
         [
@@ -52,3 +53,13 @@ def ensure_indexes() -> None:
     search_cache.create_index("expires_at", expireAfterSeconds=0, name="ttl_cache")
 
     logger.info("MongoDB indexes ensured for database '%s'", db.Config.MONGODB_DATABASE)
+
+    # Research and evidence
+    research_jobs = database["research_jobs"]
+    research_jobs.create_index("job_id", unique=True, name="uniq_research_job_id")
+    research_jobs.create_index("company_name_norm", name="idx_research_company_norm")
+    research_jobs.create_index([("created_at", ASCENDING)], name="idx_research_created")
+
+    source_evidence = database["source_evidence"]
+    source_evidence.create_index("evidence_id", unique=True, name="uniq_evidence_id")
+    source_evidence.create_index("company_id", name="idx_evidence_company")

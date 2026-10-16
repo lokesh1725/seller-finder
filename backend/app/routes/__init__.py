@@ -42,3 +42,5 @@ def require_admin():
 
 # Import route modules so their blueprints register on `api`.
 from . import auth, health, search, businesses, leads, export, admin  # noqa: E402,F401
+from . import research  # noqa: F401
+from . import companies  # noqa: F401

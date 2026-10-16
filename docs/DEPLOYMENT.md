@@ -76,8 +76,19 @@ connect the repo, point to `backend/render.yaml`.
 | `PUBLIC_FRONTEND_URL` | `https://<your-app>.vercel.app`                           |
 | `SEARCH_PROVIDER`     | `brave` or `bing` (or `none`)                             |
 | `SEARCH_API_KEY`      | your search API key (secret, optional)                    |
+| `AI_API_KEY`          | AI model API key (secret, optional - research extraction) |
+| `AI_API_BASE_URL`     | AI API base URL (secret, optional)                        |
+| `AI_API_MODEL`        | e.g. `gpt-4o-mini` (optional)                             |
+| `HUNTER_API_KEY`      | Hunter.io key (secret, optional - email enrichment)       |
 | `ADMIN_API_TOKEN`     | a long random string (protects `/api/admin/*`)            |
 | `SECRET_KEY`          | a long random string                                      |
+| `AUTH_EMAIL`          | login email (default `admin@gmail.com`)                   |
+| `AUTH_PASSWORD`       | login password (default `Test@123` - change in production)|
+| `RATE_LIMIT_PER_MINUTE` | `60`                                                    |
+
+> The app is gated: visitors must log in (`/login`) before browsing, except
+> public share links (`/business/<slug>`). Set `AUTH_EMAIL` / `AUTH_PASSWORD`
+> to your own credentials before going live.
 
 Deploy, then confirm `https://<api>.onrender.com/api/health` returns `ok`.
 
@@ -143,8 +154,13 @@ Add your domain in Vercel (frontend) and Render (API), then update
 
 - [ ] `https://<api>.onrender.com/api/health` -> `{"status":"ok"}`
 - [ ] `https://<app>.vercel.app` loads over HTTPS
+- [ ] Visiting the site prompts **login**; `admin@gmail.com` / `Test@123` works
+- [ ] Logout returns to `/login`; protected pages redirect when logged out
 - [ ] Search returns seeded companies; unknown names show an empty state
-- [ ] `/business/<slug>` deep link works on refresh
+- [ ] `/business/<slug>` deep link works on refresh (and is public)
+- [ ] `/research` starts a research job and `/research/<id>` shows progress/results
+- [ ] Research results show per-field sources + verification labels (no invented data)
+- [ ] Research CSV export works
 - [ ] Share Website / Copy Link / Share Business work
 - [ ] WhatsApp preview shows the company name (test on a mobile device)
 - [ ] Saved leads + CSV export work

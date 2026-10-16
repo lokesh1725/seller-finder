@@ -27,7 +27,9 @@ class IsoJSONProvider(DefaultJSONProvider):
 
 
 def create_app(config_object=Config) -> Flask:
-    app = Flask(__name__)
+    import os
+    static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', 'dist'))
+    app = Flask(__name__, static_folder=static_dir, static_url_path='/') if os.path.exists(static_dir) else Flask(__name__)
     app.config.from_object(config_object)
     app.json = IsoJSONProvider(app)
 
@@ -57,6 +59,12 @@ def create_app(config_object=Config) -> Flask:
 def _register_root_routes(app: Flask) -> None:
     @app.get("/")
     def root():
+        # serve frontend if built
+        import os
+        from flask import send_from_directory
+        static_dir = app.static_folder
+        if static_dir and os.path.exists(os.path.join(static_dir, 'index.html')):
+            return send_from_directory(static_dir, 'index.html')
         return jsonify(
             {
                 "name": "Seller Information Finder API",
@@ -84,3 +92,13 @@ def _init_database(app: Flask) -> None:
         ensure_indexes()
     except Exception as exc:  # noqa: BLE001
         app.logger.warning("Could not ensure MongoDB indexes on startup: %s", exc)
+
+    @app.errorhandler(404)
+    def spa_fallback(e):
+        import os
+        from flask import send_from_directory
+        static_dir = app.static_folder
+        if static_dir and os.path.exists(os.path.join(static_dir, 'index.html')):
+            return send_from_directory(static_dir, 'index.html')
+        from flask import jsonify
+        return jsonify({"error": "not_found"}), 404

@@ -112,4 +112,8 @@ export const api = {
     const params = ids.length ? `?ids=${encodeURIComponent(ids.join(","))}` : "";
     return `${API_BASE}/api/export${params}`;
   },
+  startResearch: (body) => request("/api/research", { method: "POST", body: JSON.stringify(body) }),
+  getResearch: (jobId) => request(`/api/research/${jobId}`),
+  refreshResearch: (jobId) => request(`/api/research/${jobId}/refresh`, { method: "POST", body: JSON.stringify({}) }),
+  exportResearchCsvUrl: (jobId) => `${API_BASE}/api/export/research/${jobId}`,
 };

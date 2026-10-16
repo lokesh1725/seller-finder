@@ -61,6 +61,7 @@ def _summary(doc: dict) -> dict:
         "has_linkedin": bool(doc.get("linkedin_company_url")),
         "data_origin": doc.get("data_origin"),
         "last_verified_at": doc.get("last_verified_at"),
+        "lead_priority_score": doc.get("lead_priority_score"),
     }
 
 

@@ -71,6 +71,12 @@ class Config:
         "PUBLIC_FRONTEND_URL", "http://localhost:5173"
     ).rstrip("/")
 
+    # --- AI / enrichment ---
+    AI_API_KEY = os.getenv("AI_API_KEY", "")
+    AI_API_BASE_URL = os.getenv("AI_API_BASE_URL", "")
+    AI_API_MODEL = os.getenv("AI_API_MODEL", "gpt-4o-mini")
+    HUNTER_API_KEY = os.getenv("HUNTER_API_KEY", "")
+
 
 class TestConfig(Config):
     """Configuration used by the automated test-suite."""
@@ -79,3 +85,9 @@ class TestConfig(Config):
     DEBUG = False
     MONGODB_DATABASE = os.getenv("MONGODB_TEST_DATABASE", "seller_finder_test")
     RATE_LIMIT_PER_MINUTE = 100000
+
+    # --- AI / enrichment ---
+    AI_API_KEY = os.getenv("AI_API_KEY", "")
+    AI_API_BASE_URL = os.getenv("AI_API_BASE_URL", "")
+    AI_API_MODEL = os.getenv("AI_API_MODEL", "gpt-4o-mini")
+    HUNTER_API_KEY = os.getenv("HUNTER_API_KEY", "")
