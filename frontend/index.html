@@ -13,6 +13,24 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Seller Information Finder</title>
+    <script>
+      (function () {
+        try {
+          var key = "seller_finder_theme";
+          var theme = localStorage.getItem(key);
+          if (theme !== "dark" && theme !== "light") {
+            theme =
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+          }
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

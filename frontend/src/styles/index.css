@@ -1164,3 +1164,108 @@ textarea {
     font-size: 22px;
   }
 }
+
+/* ---------- Theme toggle button ---------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Dark theme ---------- */
+[data-theme="dark"] {
+  --bg: #0b1120;
+  --surface: #111827;
+  --surface-2: #1b2434;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --border: #273449;
+  --primary: #6366f1;
+  --primary-dark: #818cf8;
+  --primary-soft: #1e1b4b;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+[data-theme="dark"] .hero {
+  background: linear-gradient(160deg, #111827 0%, #0b1120 55%, #0b1120 100%);
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background: #2a3648;
+}
+
+[data-theme="dark"] .btn-danger-ghost:hover {
+  background: rgba(220, 38, 38, 0.18);
+}
+
+[data-theme="dark"] .state-error {
+  background: rgba(220, 38, 38, 0.14);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .state-error .state-title {
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .match-exact,
+[data-theme="dark"] .badge-verified,
+[data-theme="dark"] .status-qualified,
+[data-theme="dark"] .status-won {
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
+}
+
+[data-theme="dark"] .badge-unverified {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .status-contacted,
+[data-theme="dark"] .status-replied {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .status-lost {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .login-error {
+  background: rgba(220, 38, 38, 0.16);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .password-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+[data-theme="dark"] .toast {
+  background: #1f2937;
+}
