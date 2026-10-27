@@ -50,13 +50,36 @@ def client(app):
 
 
 @pytest.fixture()
+def auth_headers(client):
+    """Log in with default dev credentials and return Authorization headers."""
+    resp = client.post(
+        "/api/auth/login",
+        json={"email": "admin@gmail.com", "password": "Test@123"},
+    )
+    assert resp.status_code == 200, resp.get_json()
+    token = resp.get_json()["token"]
+    return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture()
 def test_db(app):
+    research_collections = (
+        "businesses",
+        "leads",
+        "prospects",
+        "search_cache",
+        "import_runs",
+        "companies",
+        "research_jobs",
+        "source_evidence",
+        "saved_leads",
+    )
     with app.app_context():
         database = db_module.get_client()["seller_finder_test"]
-        for name in ("businesses", "leads", "prospects", "search_cache", "import_runs"):
+        for name in research_collections:
             database[name].delete_many({})
         yield database
-        for name in ("businesses", "leads", "prospects", "search_cache", "import_runs"):
+        for name in research_collections:
             database[name].delete_many({})
 
 

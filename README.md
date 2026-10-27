@@ -248,7 +248,8 @@ Summary:
 
 After deployment, verify from a mobile browser:
 
-- [ ] `https://<app>.vercel.app` loads over HTTPS.
+- [ ] `https://<your-unique-app>.vercel.app` loads over HTTPS and shows **this**
+      app's login page (note: `seller-finder.vercel.app` is owned by someone else).
 - [ ] `https://<api>.onrender.com/api/health` returns `status: ok`.
 - [ ] Searching a known company (e.g. `Bummer`) returns a result from the DB.
 - [ ] Searching an unknown company shows a clear empty state (no invented data).

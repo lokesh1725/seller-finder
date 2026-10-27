@@ -7,8 +7,18 @@ This guide deploys **Seller Information Finder** to production:
 - **Vercel** - React/Vite frontend (public HTTPS site + WhatsApp previews)
 - **GitHub** - source of truth for both platforms
 
-The end result is a public HTTPS URL such as `https://seller-finder.vercel.app`
-that you can share through WhatsApp.
+The end result is a public HTTPS URL you can share through WhatsApp.
+
+> **Important:** Vercel subdomains are globally unique. The name
+> `seller-finder.vercel.app` is already taken by an **unrelated third-party
+> app** (a Korean Instagram tool). Your project must use its own unique
+> production domain, for example:
+>
+> - `https://seller-finder-lokesh.vercel.app`, or
+> - a deployment URL like `https://seller-finder-<hash>-<team>.vercel.app`
+>
+> Never assume a URL belongs to this project until you have opened it and
+> seen this app's UI (login page with "Seller Finder" branding).
 
 ---
 

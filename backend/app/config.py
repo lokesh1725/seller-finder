@@ -77,6 +77,22 @@ class Config:
     AI_API_MODEL = os.getenv("AI_API_MODEL", "gpt-4o-mini")
     HUNTER_API_KEY = os.getenv("HUNTER_API_KEY", "")
 
+    # --- Ollama (local, free AI extraction) ---
+    OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
+    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")
+    OLLAMA_TIMEOUT_SECONDS = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "60"))
+    OLLAMA_ENABLED = os.getenv("OLLAMA_ENABLED", "true").lower() in ("1", "true", "yes")
+
+    # --- Research pipeline ---
+    # Fresh research results are reused for this many days before a re-run.
+    RESEARCH_CACHE_TTL_DAYS = int(os.getenv("RESEARCH_CACHE_TTL_DAYS", "30"))
+    # Contact fields get a shorter freshness window than identity fields.
+    RESEARCH_CONTACT_TTL_DAYS = int(os.getenv("RESEARCH_CONTACT_TTL_DAYS", "14"))
+    # Max pages fetched per research run (bounds cost / latency).
+    RESEARCH_MAX_PAGES = int(os.getenv("RESEARCH_MAX_PAGES", "6"))
+    # Run research jobs in a background thread (async job model).
+    RESEARCH_ASYNC = os.getenv("RESEARCH_ASYNC", "true").lower() in ("1", "true", "yes")
+
 
 class TestConfig(Config):
     """Configuration used by the automated test-suite."""
@@ -85,6 +101,9 @@ class TestConfig(Config):
     DEBUG = False
     MONGODB_DATABASE = os.getenv("MONGODB_TEST_DATABASE", "seller_finder_test")
     RATE_LIMIT_PER_MINUTE = 100000
+    # Run research inline so tests are deterministic.
+    RESEARCH_ASYNC = False
+    OLLAMA_ENABLED = False
 
     # --- AI / enrichment ---
     AI_API_KEY = os.getenv("AI_API_KEY", "")

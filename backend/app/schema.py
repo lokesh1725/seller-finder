@@ -63,3 +63,20 @@ def ensure_indexes() -> None:
     source_evidence = database["source_evidence"]
     source_evidence.create_index("evidence_id", unique=True, name="uniq_evidence_id")
     source_evidence.create_index("company_id", name="idx_evidence_company")
+
+    companies = database["companies"]
+    companies.create_index("business_id", unique=True, name="uniq_company_business_id")
+    companies.create_index("slug", unique=True, name="uniq_company_slug")
+    companies.create_index("normalized_name", name="idx_company_normalized_name")
+    companies.create_index("official_domain", name="idx_company_domain")
+    companies.create_index([("last_researched_at", ASCENDING)], name="idx_company_last_researched")
+    companies.create_index([("next_refresh_at", ASCENDING)], name="idx_company_next_refresh")
+
+    saved_leads = database["saved_leads"]
+    saved_leads.create_index("business_id", unique=True, name="uniq_saved_lead_business_id")
+    saved_leads.create_index([("saved_at", ASCENDING)], name="idx_saved_lead_saved_at")
+
+    research_jobs.create_index(
+        [("company_name_norm", ASCENDING), ("status", ASCENDING)],
+        name="idx_research_norm_status",
+    )

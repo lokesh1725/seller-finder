@@ -4,7 +4,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 // jsdom is not used; provide the minimal globals the helpers touch.
-globalThis.window = { location: { origin: "https://seller-finder.vercel.app" } };
+// NOTE: "seller-finder.vercel.app" is NOT this project - that subdomain is
+// owned by an unrelated third-party app. Tests only need a stable origin.
+globalThis.window = { location: { origin: "https://example-seller-finder.test" } };
 globalThis.navigator = {};
 
 const {
@@ -21,19 +23,19 @@ test("whatsappShareUrl encodes the message", () => {
 });
 
 test("websiteUrl falls back to the current origin", () => {
-  assert.equal(websiteUrl(), "https://seller-finder.vercel.app");
+  assert.equal(websiteUrl(), "https://example-seller-finder.test");
 });
 
 test("businessUrl builds a stable profile URL", () => {
   assert.equal(
     businessUrl("helmetshopee"),
-    "https://seller-finder.vercel.app/business/helmetshopee"
+    "https://example-seller-finder.test/business/helmetshopee"
   );
 });
 
 test("buildWebsiteMessage contains the site URL and is encodable", () => {
   const message = buildWebsiteMessage();
-  assert.match(message, /https:\/\/seller-finder\.vercel\.app/);
+  assert.match(message, /https:\/\/example-seller-finder\.test/);
   assert.ok(whatsappShareUrl(message).startsWith("https://wa.me/?text="));
 });
 
@@ -47,7 +49,7 @@ test("buildBusinessMessage includes name, location and profile URL", () => {
   });
   assert.match(message, /Bummer/);
   assert.match(message, /Ahmedabad, Gujarat/);
-  assert.match(message, /https:\/\/seller-finder\.vercel\.app\/business\/bummer/);
+  assert.match(message, /https:\/\/example-seller-finder\.test\/business\/bummer/);
   assert.match(message, /https:\/\/bummer\.in/);
 });
 
